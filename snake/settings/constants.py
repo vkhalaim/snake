@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 SIZE = (32, 32)  # size of the grid world
 SNAKE_SIZE = 3  # initial size of the snake
 # numeric representation for different types of objects
