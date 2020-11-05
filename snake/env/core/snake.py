@@ -20,8 +20,22 @@ class Snake:
         current_position = np.array(head_position)
         for i in range(1, length):
             # Direction inverse of moving
-            current_position = current_position - DIRECTIONS[self.current_direction_index]
+            current_position = (
+                current_position - DIRECTIONS[self.current_direction_index]
+            )
             self.blocks.append(tuple(current_position))
+
+    def is_opposite(self, action):
+        if action == 0 and self.current_direction_index == 2:
+            return True
+        elif action == 1 and self.current_direction_index == 3:
+            return True
+        elif action == 2 and self.current_direction_index == 0:
+            return True
+        elif action == 3 and self.current_direction_index == 1:
+            return True
+        
+        return False
 
     def step(self, action):
         """
@@ -29,13 +43,15 @@ class Snake:
         @param return: tuple, tuple
         """
         # Check if action can be performed (do nothing if in the same direction or opposite)
-        if action != self.current_direction_index and action != -self.current_direction_index:
+        if action == self.current_direction_index or self.is_opposite(action): 
+            pass
+        else:
             self.current_direction_index = action
         # Remove tail
         tail = self.blocks[-1]
-        self.blocks = self.blocks[1:]
+        self.blocks = self.blocks[:-1]
         # Check new head
-        new_head = self.blocks[0] + DIRECTIONS[action]
+        new_head = self.blocks[0] + DIRECTIONS[self.current_direction_index]
         # Add new head
-        self.blocks = [new_head] + self.blocks
+        self.blocks = [tuple(new_head)] + self.blocks
         return new_head, tail
